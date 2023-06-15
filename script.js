@@ -22,12 +22,32 @@ const game = (function() {
     function playTurn(space) {
         let place = (gridMap[space.id]);
         board.splice(place, 1, setToken());
-        console.log(board);
         // "test" should be either X or O determined by a function
 
         // win condition function
-
+        console.log(board[0]);
+        console.log(winCheck());
         displayController.updateDisplay();
+    }
+
+    function winCheck() {
+        if (
+        // horizontals
+        ((board[0]===board[1]) && (board[1]===board[2]) && (board[2]!=="")) ||
+        ((board[3]===board[4]) && (board[4]===board[5]) && (board[5]!=="")) ||
+        ((board[6]===board[7]) && (board[7]===board[8]) && (board[8]!=="")) ||
+        // verticals
+        ((board[0]===board[3]) && (board[3]===board[6]) && (board[6]!=="")) ||
+        ((board[1]===board[4]) && (board[4]===board[7]) && (board[7]!=="")) ||
+        ((board[2]===board[5]) && (board[5]===board[8]) && (board[8]!=="")) ||
+        // diagonals
+        ((board[0]===board[4]) && (board[4]===board[8]) && (board[8]!=="")) ||
+        ((board[6]===board[4]) && (board[4]===board[2]) && (board[2]!=="")) ) {
+        return "win";
+        }
+        else {
+        return "nope";
+        }
     }
 
     return {
