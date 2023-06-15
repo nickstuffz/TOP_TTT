@@ -1,15 +1,5 @@
-const spaces = document.querySelectorAll(".space");
-
-spaces.forEach((space) => {
-    space.addEventListener('click', () => {
-
-        game.playTurn(space);
-    
-    });
-});
-
 const game = (function() {
-    const board = new Array(9);
+    const board = new Array(9).fill("");
 
     const gridMap = {
         'a':0, 'b':1, 'c':2,
@@ -17,26 +7,33 @@ const game = (function() {
         'g':6, 'h':7, 'i':8
     };
     
+    let token = "o";
+    
+    function setToken() {
+        if (token === "o") {
+            token = "x";
+        }
+        else {
+            token = "o";
+        }
+        return token;
+    }
 
     function playTurn(space) {
-        // splices X into board
         let place = (gridMap[space.id]);
-        board.splice(place, 1, "test");
+        board.splice(place, 1, setToken());
         console.log(board);
         // "test" should be either X or O determined by a function
 
         // win condition function
 
         displayController.updateDisplay();
-
     }
 
     return {
         board,
         playTurn
-
-    };
-    
+    }
 })();
 
 const displayController = (function() {
@@ -45,10 +42,14 @@ const displayController = (function() {
     function createGame() {
         spaces.forEach((space) => {
             space.addEventListener('click', () => {
+            if (space.classList.contains("taken")) {
+                return;
+            }
             game.playTurn(space);
+            space.classList.add("taken");
             });
         });
-    }   
+    }
 
     // function createSpaces
     
@@ -56,36 +57,15 @@ const displayController = (function() {
         i = 0;
         spaces.forEach((space) => {
             space.innerHTML = game.board[i];
-
             i++;
         });
-
     }
     
     return {
-
+        createGame,
         updateDisplay
     }
 })();
 
-
-
-
-// gameboard object module
-// -gameboard array
-// -placePiece function
-// -playTurn function
-
-
-
-// players object
-
-
-//     function placePiece = 
-// is passed place number, updates it on gameboard
-// take X or O and places it on game state
-
-function placePiece(space) {
-    space.innerHTML = ("x");
-}
+displayController.createGame();
 
