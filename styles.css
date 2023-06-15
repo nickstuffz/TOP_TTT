@@ -1,0 +1,44 @@
+html {
+    box-sizing: border-box;
+  }
+  
+*, *:before, *:after {
+    box-sizing: inherit;
+    margin: 0;
+    padding: 0;
+    font-family: sans-serif;
+}
+
+#grid-container {
+    height: min(70vw, 80vh);
+    width: min(70vw, 80vh);
+    margin: auto;
+    margin-top: 80px;
+}
+
+#grid {
+    display: grid;
+    height: 100%;
+    width: 100%;
+    grid-template-rows: 1fr 1fr 1fr;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-areas:
+        "a b c"
+        "d e f"
+        "g h i"
+}
+
+.space {
+    border: 1px solid black;
+}
+
+#a {grid-area: a;} 
+#b {grid-area: b;}
+#c {grid-area: c;}
+#d {grid-area: d;}
+#e {grid-area: e;}
+#f {grid-area: f;}
+#g {grid-area: g;}
+#h {grid-area: h;}
+#i {grid-area: i;}
+
