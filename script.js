@@ -21,32 +21,36 @@ const game = (function() {
 
     function playTurn(space) {
         let place = (gridMap[space.id]);
-        board.splice(place, 1, setToken());
-        // "test" should be either X or O determined by a function
+        currentToken = setToken();
+        board.splice(place, 1, currentToken);
 
-        // win condition function
-        console.log(board[0]);
-        console.log(winCheck());
         displayController.updateDisplay();
+        displayController.resultHandler(resultCheck(), currentToken);
     }
 
-    function winCheck() {
+    function resultCheck() {
         if (
-        // horizontals
-        ((board[0]===board[1]) && (board[1]===board[2]) && (board[2]!=="")) ||
-        ((board[3]===board[4]) && (board[4]===board[5]) && (board[5]!=="")) ||
-        ((board[6]===board[7]) && (board[7]===board[8]) && (board[8]!=="")) ||
-        // verticals
-        ((board[0]===board[3]) && (board[3]===board[6]) && (board[6]!=="")) ||
-        ((board[1]===board[4]) && (board[4]===board[7]) && (board[7]!=="")) ||
-        ((board[2]===board[5]) && (board[5]===board[8]) && (board[8]!=="")) ||
-        // diagonals
-        ((board[0]===board[4]) && (board[4]===board[8]) && (board[8]!=="")) ||
-        ((board[6]===board[4]) && (board[4]===board[2]) && (board[2]!=="")) ) {
-        return "win";
+
+// horizontals
+((board[0]===board[1]) && (board[1]===board[2]) && (board[2]!=="")) ||
+((board[3]===board[4]) && (board[4]===board[5]) && (board[5]!=="")) ||
+((board[6]===board[7]) && (board[7]===board[8]) && (board[8]!=="")) ||
+// verticals
+((board[0]===board[3]) && (board[3]===board[6]) && (board[6]!=="")) ||
+((board[1]===board[4]) && (board[4]===board[7]) && (board[7]!=="")) ||
+((board[2]===board[5]) && (board[5]===board[8]) && (board[8]!=="")) ||
+// diagonals
+((board[0]===board[4]) && (board[4]===board[8]) && (board[8]!=="")) ||
+((board[6]===board[4]) && (board[4]===board[2]) && (board[2]!=="")) 
+
+        ) {
+            return "win";
+        }
+        else if (!(board.includes(""))) {
+            return "tie";
         }
         else {
-        return "nope";
+            return "none";
         }
     }
 
@@ -57,11 +61,12 @@ const game = (function() {
 })();
 
 const displayController = (function() {
+
     const spaces = document.querySelectorAll(".space");
 
     function createGame() {
         spaces.forEach((space) => {
-            space.addEventListener('click', () => {
+            space.addEventListener("click", () => {
             if (space.classList.contains("taken")) {
                 return;
             }
@@ -70,8 +75,6 @@ const displayController = (function() {
             });
         });
     }
-
-    // function createSpaces
     
     function updateDisplay() {
         i = 0;
@@ -80,10 +83,29 @@ const displayController = (function() {
             i++;
         });
     }
+
+    function resultHandler(result, currentToken) {
+        if (result === "none") {
+            return
+        }
+        else {
+            result_container = document.getElementById("result-container");
+            if (result === "win") {
+                result_container.innerHTML = currentToken + " wins!";
+            }
+            else if (result === "tie") {
+                result_container.innerHTML = "we have a tie!"
+            }
+            spaces.forEach((space) => {
+                space.classList.add("taken");
+            });
+        }
+    }
     
     return {
         createGame,
-        updateDisplay
+        updateDisplay,
+        resultHandler
     }
 })();
 
