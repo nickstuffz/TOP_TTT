@@ -54,15 +54,22 @@ const game = (function() {
         }
     }
 
+    function clearGame() {
+        board.fill("");
+    }
+
     return {
         board,
-        playTurn
+        playTurn,
+        clearGame
     }
 })();
 
 const displayController = (function() {
 
     const spaces = document.querySelectorAll(".space");
+
+    const result_container = document.getElementById("result-container");
 
     function createGame() {
         spaces.forEach((space) => {
@@ -89,7 +96,6 @@ const displayController = (function() {
             return
         }
         else {
-            result_container = document.getElementById("result-container");
             if (result === "win") {
                 result_container.innerHTML = currentToken + " wins!";
             }
@@ -101,13 +107,27 @@ const displayController = (function() {
             });
         }
     }
+
+    function clearSpaces() {
+        spaces.forEach((space) => {
+            space.innerHTML = "";
+            space.classList.remove("taken");
+        });
+        result_container.innerHTML = "";
+    }
     
     return {
         createGame,
         updateDisplay,
-        resultHandler
+        resultHandler,
+        clearSpaces
     }
 })();
 
 displayController.createGame();
+
+function resetBoard() {
+    displayController.clearSpaces();
+    game.clearGame();
+}
 
